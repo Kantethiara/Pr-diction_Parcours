@@ -12,3 +12,6 @@ data/*
 
 # Environment files
 .venv
+
+front.py
+Prediction.py

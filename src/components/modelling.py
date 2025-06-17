@@ -12,6 +12,9 @@ from .preprocessing import build_preprocessor, frequency_encode
 
 SAVE_PATH = "/Users/thiarakante/Documents/Databeez/prediction_parcours/src/components/artifacts/"
 
+
+
+
 def train_and_compare_models(df: pd.DataFrame, target_col: str = "decision_semestrielle"):
     y = df[target_col]
     X = df.drop(columns=[target_col])
@@ -19,10 +22,10 @@ def train_and_compare_models(df: pd.DataFrame, target_col: str = "decision_semes
     label_encoder = LabelEncoder()
     y_encoded = label_encoder.fit_transform(y)
 
-    # Calculer frequency encoding + mapping pour lieu_naissance
-    freq_map = X["lieu_naissance"].value_counts(normalize=True).to_dict()
-    X["lieu_naissance"] = X["lieu_naissance"].map(freq_map).fillna(0)
-    lieu_mapping = freq_map  # On garde la map pour la réutiliser plus tard
+    # # Calculer frequency encoding + mapping pour lieu_naissance
+    # freq_map = X["lieu_naissance"].value_counts(normalize=True).to_dict()
+    # X["lieu_naissance"] = X["lieu_naissance"].map(freq_map).fillna(0)
+    # lieu_mapping = freq_map  # On garde la map pour la réutiliser plus tard
 
     X_train, X_test, y_train, y_test = train_test_split(
         X, y_encoded, test_size=0.2, random_state=42, stratify=y_encoded
@@ -105,15 +108,15 @@ def train_and_compare_models(df: pd.DataFrame, target_col: str = "decision_semes
     print("🔧 Meilleurs hyperparamètres:", search.best_params_)
 
     # On retourne bien 5 objets
-    return best_model, base_models[best_model_name], label_encoder, best_model_name, lieu_mapping
+    return best_model, base_models[best_model_name], label_encoder, best_model_name
 
 
-def save_artifacts(pipeline: Pipeline, label_encoder: LabelEncoder, lieu_mapping: dict, name: str):
+def save_artifacts(pipeline: Pipeline, label_encoder: LabelEncoder, name: str):
     os.makedirs(SAVE_PATH, exist_ok=True)
 
-    # Sauvegarde du mapping de lieu
-    mapping_path = os.path.join(SAVE_PATH, "lieu_mapping.joblib")
-    joblib.dump(lieu_mapping, mapping_path)
+    # # Sauvegarde du mapping de lieu
+    # mapping_path = os.path.join(SAVE_PATH, "lieu_mapping.joblib")
+    # joblib.dump(lieu_mapping, mapping_path)
 
     # Sauvegarde du pipeline et de l'encodeur
     model_path = os.path.join(SAVE_PATH, f"{name}_pipeline.joblib")
@@ -121,10 +124,18 @@ def save_artifacts(pipeline: Pipeline, label_encoder: LabelEncoder, lieu_mapping
 
     joblib.dump(pipeline, model_path)
     joblib.dump(label_encoder, encoder_path)
+    
+        # Extraire le modèle seul (classifier) pour SHAP
+    model_only = pipeline.named_steps["classifier"]
+    model_only_path = os.path.join(SAVE_PATH, f"{name}_model.joblib")
+    joblib.dump(model_only, model_only_path)
+
+    print(f"💾 Modèle seul sauvegardé pour SHAP : {model_only_path}")
+
 
     print(f"💾 Pipeline sauvegardé : {model_path}")
     print(f"💾 Encodage cible sauvegardé : {encoder_path}")
-    print(f"💾 Mapping des lieux sauvegardé : {mapping_path}")
+    # print(f"💾 Mapping des lieux sauvegardé : {mapping_path}")
 
 
 def show_feature_importance(pipeline: Pipeline, X: pd.DataFrame):
