@@ -16,16 +16,28 @@ from src.components.preprocessing import build_preprocessor  # adapte le chemin 
 from fastapi.responses import StreamingResponse
 
 
-# === CHEMINS VERS LES MODELES ===
-MODEL_PATH = "/Users/thiarakante/Documents/Databeez/prediction_parcours/src/components/artifacts/DecisionTree_pipeline.joblib"
-ENCODER_PATH = "/Users/thiarakante/Documents/Databeez/prediction_parcours/src/components/artifacts/label_encoder.joblib"
-Model_seul = "/Users/thiarakante/Documents/Databeez/prediction_parcours/src/components/artifacts/DecisionTree_model.joblib"
+# # === CHEMINS VERS LES MODELES ===
+# MODEL_PATH = "/Users/thiarakante/Documents/Databeez/prediction_parcours copie/src/components/artifacts/RandomForest_pipeline.joblib"
+# ENCODER_PATH = "/Users/thiarakante/Documents/Databeez/prediction_parcours/src/components/artifacts/label_encoder.joblib"
+# Model_seul = "/Users/thiarakante/Documents/Databeez/prediction_parcours copie/src/components/artifacts/RandomForest_model.joblib"
 
-# === CHARGEMENT DES MODELES ===
-model = joblib.load(MODEL_PATH)
+# # === CHARGEMENT DES MODELES ===
+# model = joblib.load(MODEL_PATH)
+# label_encoder = joblib.load(ENCODER_PATH)
+# model_seul = joblib.load(Model_seul)
+# # lieu_mapping = joblib.load(ENCODFREQ_PATH)
+
+
+
+# === CHARGEMENT DES MODELES === (Version corrigée)
+MODEL_PATH = "/Users/thiarakante/Documents/Databeez/prediction_parcours copie/src/components/artifacts/RandomForest_pipeline.joblib"
+ENCODER_PATH = "/Users/thiarakante/Documents/Databeez/prediction_parcours/src/components/artifacts/label_encoder.joblib"
+
+# Chargement unique et cohérent
+pipeline = joblib.load(MODEL_PATH)
 label_encoder = joblib.load(ENCODER_PATH)
-model_seul = joblib.load(Model_seul)
-# lieu_mapping = joblib.load(ENCODFREQ_PATH)
+model_seul = pipeline.named_steps['classifier']
+preprocessor = pipeline.named_steps['preprocessor']  # À utiliser partout
 
 # === UNITE DE REMPLACEMENT ===
 unite = {
@@ -240,10 +252,11 @@ async def shap_explanation(
         # 3. Préparation des données
         ligne_X = ligne[colonnes_model]
 
-        # 4. Préprocessing avec vérification
-        preprocessor = build_preprocessor(df[colonnes_model])
-        preprocessor.fit(df[colonnes_model])
-        ligne_transformed = preprocessor.transform(ligne_X)
+        ligne_transformed = preprocessor.transform(ligne_X)  # Utilise le préprocesseur du pipeline
+        
+        # Supprimer l'alignement manuel des features (inutile maintenant)
+        explainer = shap.TreeExplainer(model_seul)
+        shap_values = explainer(ligne_transformed)  # Utilise directement les données transformées
 
         # Vérification cruciale des features
         feature_names_out = preprocessor.get_feature_names_out()
@@ -343,14 +356,14 @@ async def predict_from_file(file: UploadFile = File(...)):
         X.loc[:, "Semestre"] = X.loc[:, "Semestre"].astype(str)
   # S'assurer que 'Semestre' est bien traité
         
-        pred_encoded = model.predict(df[colonnes_model])
+        pred_encoded = pipeline.predict(df[colonnes_model])
         pred_label = label_encoder.inverse_transform(pred_encoded)
-        proba = model.predict_proba(df[colonnes_model])[:, 1]
+        proba = pipeline.predict_proba(df[colonnes_model])[:, 1]
 
         # Reconstitution du fichier original avec les deux colonnes ajoutées
         df_original = pd.read_excel(io.BytesIO(content)).dropna(axis=0, how='all')
         df_original["prediction"] = pred_label
-        df_original["probabilite de valide"] = proba.round(4)
+        df_original["probabilite de valide"] = proba.round(2)
 
         # Création du fichier Excel à renvoyer
         output = io.BytesIO()
@@ -360,10 +373,10 @@ async def predict_from_file(file: UploadFile = File(...)):
 
 
         return StreamingResponse(
-            output,
-            media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-            headers={"Content-Disposition": f"attachment; filename=predictions_{filename}"}
-        )
+        output,
+        media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        headers={"Content-Disposition": f"attachment; filename=predictions_{filename}"}
+    )
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Erreur lors du traitement du fichier : {str(e)}")

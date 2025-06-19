@@ -8,7 +8,7 @@ __pycache__/
 .ipynb_checkpoints/
 
 # Data folder (ignore contents but keep the folder)
-data/*
+src/data/*
 
 # Environment files
 .venv
