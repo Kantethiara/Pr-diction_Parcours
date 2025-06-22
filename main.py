@@ -23,7 +23,7 @@ logger = logging.getLogger(__name__)
 def main():
     try:
         # 1. Chargement des données
-        data_path = Path("/Users/thiarakante/Documents/Databeez/prediction_parcours/src/data/shift_data.xlsx")
+        data_path = Path(__file__).resolve().parent / "src" / "data" / "shift_data.xlsx"        
         logger.info(f"Chargement des données depuis {data_path}")
 
         df = pd.read_excel(data_path)

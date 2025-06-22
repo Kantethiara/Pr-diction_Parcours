@@ -1,37 +1,22 @@
 import sys
 import os
-
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
-
-
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")))
 from fastapi import FastAPI, HTTPException, UploadFile, File
 from fastapi.responses import StreamingResponse
 import joblib
 import pandas as pd
-import matplotlib.pyplot as plt
 import shap
-import numpy as np
 import io
-from src.components.preprocessing import build_preprocessor  # adapte le chemin si besoin
 from fastapi.responses import StreamingResponse
 
+from pathlib import Path
 
-# # === CHEMINS VERS LES MODELES ===
-# MODEL_PATH = "/Users/thiarakante/Documents/Databeez/prediction_parcours copie/src/components/artifacts/RandomForest_pipeline.joblib"
-# ENCODER_PATH = "/Users/thiarakante/Documents/Databeez/prediction_parcours/src/components/artifacts/label_encoder.joblib"
-# Model_seul = "/Users/thiarakante/Documents/Databeez/prediction_parcours copie/src/components/artifacts/RandomForest_model.joblib"
+# Get the directory of the current file
+BASE_DIR = Path(__file__).parent
+ARTIFACTS_DIR = BASE_DIR / "artifacts"
 
-# # === CHARGEMENT DES MODELES ===
-# model = joblib.load(MODEL_PATH)
-# label_encoder = joblib.load(ENCODER_PATH)
-# model_seul = joblib.load(Model_seul)
-# # lieu_mapping = joblib.load(ENCODFREQ_PATH)
-
-
-
-# === CHARGEMENT DES MODELES === (Version corrigée)
-MODEL_PATH = "/Users/thiarakante/Documents/Databeez/prediction_parcours copie/src/components/artifacts/RandomForest_pipeline.joblib"
-ENCODER_PATH = "/Users/thiarakante/Documents/Databeez/prediction_parcours/src/components/artifacts/label_encoder.joblib"
+MODEL_PATH = ARTIFACTS_DIR / "RandomForest_pipeline.joblib"
+ENCODER_PATH = ARTIFACTS_DIR / "label_encoder.joblib"
 
 # Chargement unique et cohérent
 pipeline = joblib.load(MODEL_PATH)

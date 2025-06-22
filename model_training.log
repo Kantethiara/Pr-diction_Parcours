@@ -1,0 +1,10 @@
+2025-06-20 14:14:18,200 - INFO - Chargement des données depuis /Users/thiarakante/Documents/Databeez/prediction_parcours copie/deploy_api_esp/app/data/shift_data.xlsx
+2025-06-20 14:14:18,474 - INFO - Lancement de l'entraînement...
+2025-06-20 14:14:18,587 - INFO - Temps d'entraînement: 0.11s
+2025-06-20 14:14:18,587 - INFO - Modèle sélectionné: RandomForest
+2025-06-20 14:14:18,642 - INFO - Processus terminé avec succès
+2025-06-20 14:27:07,645 - INFO - Chargement des données depuis /Users/thiarakante/Documents/Databeez/prediction_parcours copie/deploy_api_esp/app/data/shift_data.xlsx
+2025-06-20 14:27:07,946 - INFO - Lancement de l'entraînement...
+2025-06-20 14:27:08,137 - INFO - Temps d'entraînement: 0.19s
+2025-06-20 14:27:08,144 - INFO - Modèle sélectionné: RandomForest
+2025-06-20 14:27:08,236 - INFO - Processus terminé avec succès

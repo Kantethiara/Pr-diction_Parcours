@@ -11,7 +11,10 @@ from sklearn.metrics import accuracy_score
 from .preprocessing import build_preprocessor, get_feature_names
 from sklearn.model_selection import cross_val_score, StratifiedKFold
 
-SAVE_PATH = "/Users/thiarakante/Documents/Databeez/prediction_parcours copie/src/components/artifacts"
+from pathlib import Path
+
+# Définir un chemin relatif basé sur le répertoire actuel
+SAVE_PATH = Path(__file__).resolve().parent / "artifacts"
 def train_and_compare_models(df: pd.DataFrame, target_col: str = "decision_semestrielle"):
     # 1. Préparation des données
     y = df[target_col]

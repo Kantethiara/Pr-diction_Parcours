@@ -3,8 +3,6 @@ import pandas as pd
 import requests
 import io
 import joblib
-import shap
-from PIL import Image
 import plotly.express as px
 
 # Configuration de la page
