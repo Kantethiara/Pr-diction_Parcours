@@ -12,8 +12,7 @@ from fastapi.responses import StreamingResponse
 from pathlib import Path
 
 # Get the directory of the current file
-BASE_DIR = Path(__file__).parent
-ARTIFACTS_DIR = BASE_DIR / "artifacts"
+ARTIFACTS_DIR = Path(__file__).resolve().parent.parent / "src" / "components" / "artifacts"
 
 MODEL_PATH = ARTIFACTS_DIR / "RandomForest_pipeline.joblib"
 ENCODER_PATH = ARTIFACTS_DIR / "label_encoder.joblib"
