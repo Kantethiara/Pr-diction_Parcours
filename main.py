@@ -5,8 +5,7 @@ from datetime import datetime
 from src.components.modelling import (
     train_and_compare_models, 
     save_artifacts, 
-    show_feature_importance,
-    load_artifacts  # Si vous avez implémenté cette fonction
+    show_feature_importance
 )
 
 # Configuration du logging
@@ -23,7 +22,7 @@ logger = logging.getLogger(__name__)
 def main():
     try:
         # 1. Chargement des données
-        data_path = Path(__file__).resolve().parent / "src" / "data" / "shift_data.xlsx"        
+        data_path = Path(__file__).resolve().parent / "src" / "data" / "shift_Data1.xlsx"        
         logger.info(f"Chargement des données depuis {data_path}")
 
         df = pd.read_excel(data_path)

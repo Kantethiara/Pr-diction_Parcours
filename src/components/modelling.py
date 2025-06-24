@@ -13,7 +13,6 @@ from sklearn.model_selection import cross_val_score, StratifiedKFold
 
 from pathlib import Path
 
-# Définir un chemin relatif basé sur le répertoire actuel
 SAVE_PATH = Path(__file__).resolve().parent / "artifacts"
 def train_and_compare_models(df: pd.DataFrame, target_col: str = "decision_semestrielle"):
     # 1. Préparation des données
@@ -24,7 +23,7 @@ def train_and_compare_models(df: pd.DataFrame, target_col: str = "decision_semes
     label_encoder = LabelEncoder()
     y_encoded = label_encoder.fit_transform(y)
     
-    # 2. Split des données (identique à Colab)
+    # 2. Split des données 
     X_train, X_test, y_train, y_test = train_test_split(
         X, y_encoded, 
         test_size=0.2, 
@@ -43,7 +42,7 @@ def train_and_compare_models(df: pd.DataFrame, target_col: str = "decision_semes
             random_state=42
         ),
         "DecisionTree": DecisionTreeClassifier(
-            max_depth=3,
+            max_depth=4,
             random_state=42
         ),
         "RandomForest": RandomForestClassifier(

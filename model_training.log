@@ -8,3 +8,23 @@
 2025-06-20 14:27:08,137 - INFO - Temps d'entraînement: 0.19s
 2025-06-20 14:27:08,144 - INFO - Modèle sélectionné: RandomForest
 2025-06-20 14:27:08,236 - INFO - Processus terminé avec succès
+2025-06-24 09:38:10,328 - INFO - Chargement des données depuis /Users/thiarakante/Documents/Databeez/prediction_parcours copie/src/data/shift_data.xlsx
+2025-06-24 09:38:10,436 - INFO - Lancement de l'entraînement...
+2025-06-24 09:38:10,528 - INFO - Temps d'entraînement: 0.09s
+2025-06-24 09:38:10,528 - INFO - Modèle sélectionné: RandomForest
+2025-06-24 09:38:10,556 - INFO - Processus terminé avec succès
+2025-06-24 09:44:09,492 - INFO - Chargement des données depuis /Users/thiarakante/Documents/Databeez/prediction_parcours copie/src/data/shift_Data1.xlsx
+2025-06-24 09:44:09,710 - INFO - Lancement de l'entraînement...
+2025-06-24 09:44:09,816 - INFO - Temps d'entraînement: 0.11s
+2025-06-24 09:44:09,816 - INFO - Modèle sélectionné: DecisionTree
+2025-06-24 09:44:09,820 - INFO - Processus terminé avec succès
+2025-06-24 09:47:06,487 - INFO - Chargement des données depuis /Users/thiarakante/Documents/Databeez/prediction_parcours copie/src/data/shift_Data1.xlsx
+2025-06-24 09:47:06,597 - INFO - Lancement de l'entraînement...
+2025-06-24 09:47:06,695 - INFO - Temps d'entraînement: 0.10s
+2025-06-24 09:47:06,695 - INFO - Modèle sélectionné: DecisionTree
+2025-06-24 09:47:06,700 - INFO - Processus terminé avec succès
+2025-06-24 09:48:44,281 - INFO - Chargement des données depuis /Users/thiarakante/Documents/Databeez/prediction_parcours copie/src/data/shift_Data1.xlsx
+2025-06-24 09:48:44,410 - INFO - Lancement de l'entraînement...
+2025-06-24 09:48:44,498 - INFO - Temps d'entraînement: 0.09s
+2025-06-24 09:48:44,498 - INFO - Modèle sélectionné: DecisionTree
+2025-06-24 09:48:44,502 - INFO - Processus terminé avec succès

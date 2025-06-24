@@ -14,7 +14,7 @@ from pathlib import Path
 # Get the directory of the current file
 ARTIFACTS_DIR = Path(__file__).resolve().parent.parent / "src" / "components" / "artifacts"
 
-MODEL_PATH = ARTIFACTS_DIR / "RandomForest_pipeline.joblib"
+MODEL_PATH = ARTIFACTS_DIR / "DecisionTree_pipeline.joblib"
 ENCODER_PATH = ARTIFACTS_DIR / "label_encoder.joblib"
 
 # Chargement unique et cohérent
@@ -26,63 +26,55 @@ preprocessor = pipeline.named_steps['preprocessor']  # À utiliser partout
 # === UNITE DE REMPLACEMENT ===
 unite = {
     "Sciences_fondamentales": [
-        "Licence-GBM-111 Sciences fondamentales I",
-        "Licence-GBM-121 Sciences fondamentales II",
-        "Licence-GBM-112 Sciences chimiques"
-    ],
-    "Biologie_Biophysique": [
-        "Licence-GBM-113 Sciences biologiques I",
-        "Licence-GBM-124 Sciences biologiques II",
-        "Licence-GBM-231 Sciences biologiques III",
-        "Licence-GBM-236 Biophysique I",
-        "Licence-GBM-242 Biophysique II",
-        "Licence-GBM-356 Techniques d'imagerie"
-    ],
-    "Informatique": [
-        "Licence-GBM-122 Informatique I",
-        "Licence-GBM-245 Informatique II",
-        "Licence-GBM-234 Automatismes & Informatique industrielle"
-    ],
-    "Electronique_Automatique": [
+         "Licence-GBM-111 Sciences fondamentales I",
+         "Licence-GBM-121 Sciences fondamentales II",
+         "licence-GBM-115 Mécanique I",
+         "Licence-GBM-125 Mécanique II"
+     ],
+     "Sciences_chimiques_biologiques": [
+        "Licence-GBM-112 Sciences chimiques",
+         "Licence-GBM-113 Sciences biologiques I",
+         "Licence-GBM-124 Sciences biologiques II",
+         "Licence-GBM-231 Sciences biologiques III"
+     ],
+     "Biophysique_imagerie_medicale": [
+         "Licence-GBM-236 Biophysique I",
+         "Licence-GBM-242 Biophysique II",
+         "Licence-GBM-354 Traitement des signaux",
+         "Licence-GBM-356 Techniques d'imagerie"
+     ],
+     "Electronique_Automatique_Informatique": [
         "Licence-GBM-114 Electricité-Electronique I",
-        "Licence-GBM-123 Electricité-Electronique II",
-        "Licence-GBM-233 Electricité-Electronique III",
-        "Licence-GBM-244 Automatique - Système embarqué",
-        "Licence-GBM-354 Traitement des signaux"
-    ],
-    "Maintenance_Systèmes": [
-        "Licence-GBM-241 Organisation et méthodes de maintenance I",
-        "Licence-GBM-352 Organisation et méthodes de maintenance II",
-        "Licence-GBM-353 Maintenance des systèmes",
-        "Licence-GBM-355 Maintenance biomédicale"
-    ],
-    "Biomédical": [
-        "Licence-GBM-235 Technologies biomédicales",
-        "Licence-GBM-246 Instrumentation biomédicale I",
-        "Licence-GBM-351 Instrumentation biomédicale II"
-    ],
-    "Communication": [
-        "Licence-GBM-116 Communication I",
-        "Licence-GBM-126 Communication II",
-        "Licence-GBM-362 Communication III",
-        "Licence-GBM-361 Développement personnel"
-    ],
-    "Mécanique": [
-        "Licence-GBM-115 Mécanique I",
-        "Licence-GBM-125 Mécanique II"
-    ],
-    "Gestion_Risques_HQSE": [
-        "Licence-GBM-232 HQSE",
-        "Licence-GBM-243 Gestion des risques"
-    ],
-    "Imagerie": [
-        "Licence-GBM-356 Techniques d'imagerie"
-    ],
-    "Moyenne_generale": [
-        "Moyenne générale"
-    ]
-    
-}
+         "Licence-GBM-123 Electricité-Electronique II",
+         "Licence-GBM-233 Electricité-Electronique III",
+         "Licence-GBM-122 Informatique I",
+         "Licence-GBM-245 Informatique II",
+         "Licence-GBM-244 Automatique - Système embarqué",
+         "Licence-GBM-234 Automatismes & Informatique industrielle"
+     ],
+     "Maintenance_Biomedicale": [
+         "Licence-GBM-241 Organisation et méthodes de maintenance I",
+         "Licence-GBM-352 Organisation et méthodes de maintenance II",
+         "Licence-GBM-353 Maintenance des systèmes",
+         "Licence-GBM-355 Maintenance biomédicale"
+     ],
+     "Technologies_Biomédicales": [
+         "Licence-GBM-235 Technologies biomédicales",
+         "Licence-GBM-246 Instrumentation biomédicale I",
+         "Licence-GBM-351 Instrumentation biomédicale II"
+     ],
+     "Competences_douces": [
+         "Licence-GBM-116 Communication I",
+         "Licence-GBM-126 Communication II",
+         "Licence-GBM-362 Communication III",
+         "Licence-GBM-361 Développement personnel"
+     ],
+     "QHSE": [
+         "Licence-GBM-232 HQSE",
+         "Licence-GBM-243 Gestion des risques"
+     ]
+ }
+ 
 
 # === MAPPING SEMESTRE ===
 semester_mapping = {
@@ -139,12 +131,13 @@ def process_file(file_bytes, filename, unite):
     df.fillna(0, inplace=True)
 
     # Ajout des colonnes manquantes avec 0
-    colonnes_model = [
-        "Informatique", "Electronique_Automatique", "Biologie_Biophysique",
-        "Mécanique", "Communication", "Semestre", "Gestion_Risques_HQSE",
-        "Biomédical", "Maintenance_Systèmes", "Sciences_fondamentales", 
-        "Moyenne_generale", "lieu_naissance", "age"  # Ajout ici
-    ]
+    colonnes_model =  ['numero etudiant', 'Sciences_fondamentales',
+       'Sciences_chimiques_biologiques',
+       'Electronique_Automatique_Informatique', 'Competences_douces',
+       'Semestre', 'Maintenance_Biomedicale', 'Biophysique_imagerie_medicale',
+       'QHSE', 'Technologies_Biomédicales', 'Moyenne_generale',
+       'decision_semestrielle']
+    
     
     for col in colonnes_model:
         if col not in df.columns:
@@ -221,12 +214,13 @@ async def shap_explanation(
         else:
             raise HTTPException(status_code=400, detail="Vous devez fournir soit un numéro étudiant, soit un nom/prénom")
 
-        colonnes_model = [
-            "Informatique", "Electronique_Automatique", "Biologie_Biophysique",
-            "Mécanique", "Communication", "Semestre", "Gestion_Risques_HQSE",
-            "Biomédical", "Maintenance_Systèmes", "Sciences_fondamentales", 
-            "Moyenne_generale", "lieu_naissance", "age"
-        ]
+        colonnes_model =  ['numero etudiant', 'Sciences_fondamentales',
+       'Sciences_chimiques_biologiques',
+       'Electronique_Automatique_Informatique', 'Competences_douces',
+       'Semestre', 'Maintenance_Biomedicale', 'Biophysique_imagerie_medicale',
+       'QHSE', 'Technologies_Biomédicales', 'Moyenne_generale',
+       'decision_semestrielle']
+    
 
         # 2. Vérification des colonnes manquantes
         missing_cols = [col for col in colonnes_model if col not in df.columns]
@@ -323,12 +317,13 @@ async def predict_from_file(file: UploadFile = File(...)):
         # Traitement du fichier
         df = process_file(content, filename, unite)
 
-        colonnes_model = [
-            "Informatique", "Electronique_Automatique", "Biologie_Biophysique",
-            "Mécanique", "Communication", "Semestre", "Gestion_Risques_HQSE",
-            "Biomédical", "Maintenance_Systèmes", "Sciences_fondamentales", 
-            "Moyenne_generale", "lieu_naissance", "age"
-        ]
+        colonnes_model =  ['numero etudiant', 'Sciences_fondamentales',
+       'Sciences_chimiques_biologiques',
+       'Electronique_Automatique_Informatique', 'Competences_douces',
+       'Semestre', 'Maintenance_Biomedicale', 'Biophysique_imagerie_medicale',
+       'QHSE', 'Technologies_Biomédicales', 'Moyenne_generale',
+       'decision_semestrielle']
+    
 
         for col in colonnes_model:
             if col not in df.columns:
