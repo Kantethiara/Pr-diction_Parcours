@@ -5,6 +5,10 @@ import io
 import joblib
 import plotly.express as px
 
+
+
+from pathlib import Path
+
 # Configuration de la page
 st.set_page_config(
     page_title="Analyse Parcours Étudiant",
@@ -158,16 +162,20 @@ st.markdown("""
     """, unsafe_allow_html=True)
 
 # URL de l'API
-API_URL = "http://127.0.0.1:8000/predict-file"
-API_SHAP_URL = "http://127.0.0.1:8000/shap-explanation/"
+API_URL = "https://pr-diction-parcours.onrender.com/predict-file/"
+API_SHAP_URL = "https://pr-diction-parcours.onrender.com/shap-explanation/"
 
-# Chargement du modèle (cache pour performance)
-@st.cache_resource
-def load_model():
-    return joblib.load("/Users/thiarakante/Documents/Databeez/prediction_parcours/src/components/artifacts/RandomForest_pipeline.joblib")
-
-pipeline = load_model()
-model = pipeline.named_steps["classifier"]
+# # Chargement du modèle (cache pour performance)
+# @st.cache_resource
+# def load_model():
+# # Option 1: Hardcoded (replace with your actual path)
+#     MODEL_PATH = "/Users/thiarakante/Documents/Databeez/prediction_parcours copie/src/components/artifacts/DecisionTree_pipeline.joblib"
+#     print(f"Chargement modèle depuis : {MODEL_PATH}")
+    
+#     model = joblib.load(MODEL_PATH)
+#     return model
+# pipeline = load_model()
+# model = pipeline.named_steps["classifier"]
 
 # Interface utilisateur
 st.title("🎓 Prédiction du Parcours Étudiant")
