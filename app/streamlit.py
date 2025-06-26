@@ -533,7 +533,7 @@ if uploaded_file is not None:
 
 # Sidebar (inchangé)
 with st.sidebar:
-    st.image("/Users/thiarakante/Documents/Databeez/prediction_parcours/app/logo1.png", use_container_width=True)
+    st.image("app/logo1.png", use_container_width=True)
     st.markdown("""
         ### 📚 Aide
         - **Format fichier** : Doit être un fichier Excel (.xlsx ou .xls)
